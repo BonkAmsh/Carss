@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OLX Clone Home Page</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>OLX Clone</h1>
+            <nav>
+                <a href="#">Home</a>
+                <a href="post_ad.php">Post an Ad</a>
+                <a href="view_ads.php">View Ads</a>
+                <a href="#" id="loginBtn">Login</a>
+                <a href="#" id="signupBtn">Sign Up</a>
+                <a href="#">My Account</a>
+                <a href="#">Chats</a>
+            </nav>
+        </div>
+    </header>
+    <main>
+        <div class="container">
+            <div class="search-bar">
+                <input type="text" placeholder="Search for ads...">
+                <button>Search</button>
+            </div>
+            <section class="featured-ads">
+                <h2>Featured Ads</h2>
+                <div class="ads-container">
+                    <!-- Dynamic ad content -->
+                    <?php
+                    include 'config.php';
+                    $sql = "SELECT * FROM ads ORDER BY created_at DESC LIMIT 4";
+                    $result = $conn->query($sql);
+
+                    if ($result->num_rows > 0) {
+                        while($row = $result->fetch_assoc()) {
+                            echo "
+                            <div class='ad'>
+                                <img src='https://via.placeholder.com/150' alt='Ad Image'>
+                                <h3>" . htmlspecialchars($row['title']) . "</h3>
+                                <p>$" . htmlspecialchars($row['price']) . "</p>
+                            </div>";
+                        }
+                    } else {
+                        echo "<p>No ads found.</p>";
+                    }
+                    ?>
+                </div>
+            </section>
+        </div>
+    </main>
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 OLX Clone. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Login Modal -->
+    <div id="loginModal" class="modal">
+        <div class="modal-content">
+            <span class="close" id="closeLogin">&times;</span>
+            <h2>Login</h2>
+            <form action="login.php" method="POST">
+                <label for="loginEmail">Email:</label><br>
+                <input type="email" id="loginEmail" name="loginEmail" required><br>
+                <label for="loginPassword">Password:</label><br>
+                <input type="password" id="loginPassword" name="loginPassword" required><br>
+                <button type="submit">Login</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Signup Modal -->
+    <div id="signupModal" class="modal">
+        <div class="modal-content">
+            <span class="close" id="closeSignup">&times;</span>
+            <h2>Sign Up</h2>
+            <form action="signup.php" method="POST">
+                <label for="signupName">Name:</label><br>
+                <input type="text" id="signupName" name="signupName" required><br>
+                <label for="signupEmail">Email:</label><br>
+                <input type="email" id="signupEmail" name="signupEmail" required><br>
+                <label for="signupPassword">Password:</label><br>
+                <input type="password" id="signupPassword" name="signupPassword" required><br>
+                <button type="submit">Sign Up</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
